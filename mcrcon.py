@@ -1,7 +1,14 @@
+#!/usr/bin/env python2
+
+DEFAULT_HOST = 'localhost'
+DEFAULT_PORT = 25575
+DEFAULT_PASS = 'asd'
+
 import socket
 import select
 import struct
 import re
+import sys
 
 class MCRcon:
     def __init__(self, host, port, password):
@@ -53,3 +60,17 @@ class MCRcon:
             ready = select.select([self.s], [], [], 0)[0]
         
         return in_data
+
+
+if __name__ == '__main__':
+    r = MCRcon(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_PASS)
+    while True:
+        try:
+            line = sys.stdin.readline()
+        except KeyboardInterrupt:
+            break
+
+        if not line:
+            break
+
+        print repr(r.send(line.strip()))
